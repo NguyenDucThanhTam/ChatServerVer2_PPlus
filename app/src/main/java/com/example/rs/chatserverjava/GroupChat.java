@@ -28,8 +28,8 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
     EditText edtMess;
     ImageButton btnSend;
     Socket socket;
-    String host = "192.168.1.10";
-    int port = 3000;
+    String host = "192.168.1.5";
+    int port = 2222;
     BufferedReader is;
     BufferedWriter os;
     String getName;
@@ -102,16 +102,18 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
 
         setMessageListView();
 
+        //NOTE: haven't data so make comment
 
-//        try {
-//            // ghi dữ liệu vào luồng
-//            //dữ liệu theo cấu trúc <name>%<mess>%<action>
-//            os.write(getName + "%" + outputMess + "%" + actionChat);
-//            os.newLine();
-//            os.flush();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        //ERROR IN HERE
+        try {
+            // ghi dữ liệu vào luồng
+            //dữ liệu theo cấu trúc <name>%<mess>%<action>
+            os.write(getName + "%" + outputMess + "%" + actionChat);
+            os.newLine();
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setMessageListView() {

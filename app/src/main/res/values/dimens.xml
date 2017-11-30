@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="pdL_edt_name">20dp</dimen>
+    <dimen name="pdL_edt_name">0dp</dimen>
     <dimen name="w_edt_name">300dp</dimen>
     <dimen name="h_edt_name">50dp</dimen>
     <dimen name="w_btn_join">100dp</dimen>

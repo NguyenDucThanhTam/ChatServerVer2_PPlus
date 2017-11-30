@@ -1,13 +1,11 @@
 package com.example.rs.chatserverjava;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -28,14 +26,17 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
     EditText edtMess;
     ImageButton btnSend;
     Socket socket;
-    String host = "192.168.1.5";
-    int port = 2222;
+    String host = "192.168.1.10";
+    int port = 3000;
     BufferedReader is;
     BufferedWriter os;
     String getName;
     String inputMessenger;
     String actionSetname = "name";
     String actionChat = "chat";
+    ArrayList<String> listMess;
+    ArrayAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +45,23 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
 
         initMapped();
 
+        initDisplay();
+
         initEventsHandler();
 
         bundleData();
 
         new connectServer().execute();
 
+    }
+
+    //setup list view
+    private void initDisplay() {
+        listMess = new ArrayList<>();
+        //đảm bảo list view hoạt động tốt
+        listMess.add("begin chat");
+        adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, listMess);
+        lvMess.setAdapter(adapter);
     }
 
     private void bundleData() {
@@ -90,29 +102,35 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
             // button send
             case R.id.btn_send_mess:
                 //đẩy dữ liệu lên server khi nhấn nút send
-                putMess();
+                //mở một luồng riêng để đẩy dữ liệu đi
+                new sendMessage().start();
                 break;
         }
     }
 
-    // NOTE: đẩy dữ liệu lên server
-    private void putMess() {
-        //biến chứa message lấy từ edittext ra
-        String outputMess = edtMess.getText().toString();
+    //luồng riêng để gửi tin nhắn
+    private class sendMessage extends Thread{
+        @Override
+        public void run() {
+            super.run();
+            //biến chứa message lấy từ edittext ra
+            String outputMess = edtMess.getText().toString();
 
-        setMessageListView();
+//            setMessageListView();
 
-        //NOTE: haven't data so make comment
+            //NOTE: haven't data so make comment
 
-        //ERROR IN HERE
-        try {
-            // ghi dữ liệu vào luồng
-            //dữ liệu theo cấu trúc <name>%<mess>%<action>
-            os.write(getName + "%" + outputMess + "%" + actionChat);
-            os.newLine();
-            os.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+            //ERROR IN HERE
+            try {
+                // ghi dữ liệu vào luồng
+                //dữ liệu theo cấu trúc <name>%<mess>%<action>
+                os.write(getName + "%" + outputMess + "%" + actionChat);
+                os.newLine();
+                os.flush();
+                Log.d(TAG, "sended: " + outputMess);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -124,6 +142,14 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
 
         lvMess.setAdapter(adapter);
 
+    }
+    // mở 1 luồng để đăng kí với server
+    private class register extends Thread{
+        @Override
+        public void run() {
+            super.run();
+
+        }
     }
 
     // mở một luồng xử lí server

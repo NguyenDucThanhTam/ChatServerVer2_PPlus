@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     TextInputEditText edt_name_user;
     Button btn_join;
     TextInputLayout txt_layout_name;
+    String getNameUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,14 +73,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //NOTE: method JOIN GroupChat
-    String getNameUser;
+
     private void joinGroupChat() {
         Bundle bundle = new Bundle();
 
         Intent intent = new Intent(MainActivity.this, GroupChat.class);
 
         //NOTE: Check Empty User
-        getNameUser = edt_name_user.getText().toString().trim();
+
 
         bundle.putString("user name", getNameUser);
 
@@ -91,5 +92,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkEmptyUser() {
         //NOTE: Check User NOT empty in here .....
+        getNameUser = edt_name_user.getText().toString().trim();
+        if(getNameUser.isEmpty()){
+            edt_name_user.setError("Please enter your name");
+        } else{
+            joinGroupChat();
+        }
     }
 }

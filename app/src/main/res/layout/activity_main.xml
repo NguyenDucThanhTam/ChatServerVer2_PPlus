@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.example.rs.chatserverjava.MainActivity">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txtinput_user"
+        android:layout_width="@dimen/w_edt_name"
+        android:layout_height="@dimen/h_edt_name">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edt_name_user"
+            android:layout_width="@dimen/w_edt_name"
+            android:layout_height="@dimen/h_edt_name"
+            android:hint="type your name here ..."
+            android:padding="@dimen/pdL_edt_name" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btn_join"
+        android:layout_width="@dimen/w_btn_join"
+        android:layout_height="@dimen/h_btn_join"
+        android:text="Join" />
+
+</LinearLayout>

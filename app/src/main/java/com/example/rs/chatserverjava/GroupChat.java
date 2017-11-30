@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class GroupChat extends AppCompatActivity implements View.OnClickListener {
 
@@ -34,6 +38,8 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
     String inputMessenger;
     String actionSetname = "name";
     String actionChat = "chat";
+
+    ArrayAdapter<String> arrMess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,32 +90,77 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             // button send
             case R.id.btn_send_mess:
+                try {
+                    putMess();
+                    break;
+                }
+                catch(Exception ex){
+                    Toast.makeText(this, ex+"", Toast.LENGTH_SHORT).show();
+                }
                 //đẩy dữ liệu lên server khi nhấn nút send
-                putMess();
-                break;
+
         }
     }
 
     // NOTE: đẩy dữ liệu lên server
     private void putMess() {
         //biến chứa message lấy từ edittext ra
+
         String outputMess = edtMess.getText().toString();
-        try {
-            // ghi dữ liệu vào luồng
-            //dữ liệu theo cấu trúc <name>%<mess>%<action>
-            os.write(getName + "%" + outputMess + "%" + actionChat);
-            os.newLine();
-            os.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        setMessageListview();
+
+        //NOTE: Chua co server test nen se cmt lai
+
+//        try {
+//            // ghi dữ liệu vào luồng
+//            //dữ liệu theo cấu trúc <name>%<mess>%<action>
+//            os.write(getName + "%" + outputMess + "%" + actionChat);
+//            os.newLine();
+//            os.flush();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
+    }
+
+    //Set Messege to listview
+    private void setMessageListview() {
+
+
+        final ArrayList<String> list = new ArrayList<>();
+
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_list_item_1, list);
+
+
+        lvMess.setAdapter(adapter);
+
+        String outputMess = edtMess.getText().toString();
+
+        list.add(outputMess);
+
+        adapter.notifyDataSetChanged();
+
+        lvMess.setOnItemLongClickListener(new AdapterView
+                .OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int arg2, long arg3) {
+                list.remove(arg2);
+                adapter.notifyDataSetChanged();
+                return false;
+            }
+        });
     }
 
     // mở một luồng xử lí server
-    public class connectServer extends AsyncTask<Void, String, Void>{
+    public class connectServer extends AsyncTask<Void, String, Void> {
 
         @Override
         protected void onPreExecute() {

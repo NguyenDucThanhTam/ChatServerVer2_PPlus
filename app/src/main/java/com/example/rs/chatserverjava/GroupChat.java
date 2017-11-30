@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class GroupChat extends AppCompatActivity implements View.OnClickListener {
 
@@ -97,15 +99,29 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
     private void putMess() {
         //biến chứa message lấy từ edittext ra
         String outputMess = edtMess.getText().toString();
-        try {
-            // ghi dữ liệu vào luồng
-            //dữ liệu theo cấu trúc <name>%<mess>%<action>
-            os.write(getName + "%" + outputMess + "%" + actionChat);
-            os.newLine();
-            os.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        setMessageListView();
+
+
+//        try {
+//            // ghi dữ liệu vào luồng
+//            //dữ liệu theo cấu trúc <name>%<mess>%<action>
+//            os.write(getName + "%" + outputMess + "%" + actionChat);
+//            os.newLine();
+//            os.flush();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    private void setMessageListView() {
+        String outputMess = edtMess.getText().toString();
+        ArrayList<String> arraList = new ArrayList<>();
+            arraList.add(outputMess);
+        ArrayAdapter<String>adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arraList);
+
+        lvMess.setAdapter(adapter);
+
     }
 
     // mở một luồng xử lí server

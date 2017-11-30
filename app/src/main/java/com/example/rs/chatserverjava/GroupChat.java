@@ -85,21 +85,15 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            // button send
             case R.id.btn_send_mess:
-                //đẩy dữ liệu lên server khi nhấn nút send
                 putMess();
                 break;
         }
     }
 
-    // NOTE: đẩy dữ liệu lên server
     private void putMess() {
-        //biến chứa message lấy từ edittext ra
         String outputMess = edtMess.getText().toString();
         try {
-            // ghi dữ liệu vào luồng
-            //dữ liệu theo cấu trúc <name>%<mess>%<action>
             os.write(getName + "%" + outputMess + "%" + actionChat);
             os.newLine();
             os.flush();
@@ -108,7 +102,6 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    // mở một luồng xử lí server
     public class connectServer extends AsyncTask<Void, String, Void>{
 
         @Override
@@ -119,25 +112,15 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-
-                // connect với server với host và port cài đặt ở trê
                 socket = new Socket(host, port);
-                // mở luồng đọc ghi dữ liệu
                 is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 os = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
-                // khai báo name cho server
                 os.write(getName + "%" + getName + "%" + actionSetname);
                 os.newLine();
-                os.flush(); // đẩy dũ liệu lên
-
+                os.flush();
                 Log.d(TAG, "connect sucess");
-
-                //chờ tinh nhắn tới
                 while (true) {
-                    //chờ đến khi nào nhận được tin nhắn mới chạy tiếp
                     inputMessenger = is.readLine();
-                    //update UI
                     publishProgress(inputMessenger);
 
                 }
@@ -149,7 +132,6 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
 
         }
 
-        //NOTE cập nhật UI ở đây
         @Override
         protected void onProgressUpdate(String... values) {
 //            super.onProgressUpdate(values);

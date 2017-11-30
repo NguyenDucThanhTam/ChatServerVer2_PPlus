@@ -198,6 +198,8 @@ public class GroupChat extends AppCompatActivity implements View.OnClickListener
         protected void onProgressUpdate(String... values) {
 //            super.onProgressUpdate(values);
             //values[0] là messenger nhận được
+            listMess.add(values[0]);
+            adapter.notifyDataSetChanged();
         }
 
         @Override

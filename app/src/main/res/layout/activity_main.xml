@@ -17,8 +17,7 @@
             android:id="@+id/edt_name_user"
             android:layout_width="@dimen/w_edt_name"
             android:layout_height="@dimen/h_edt_name"
-            android:hint="type your name here ..."
-            android:padding="@dimen/pdL_edt_name" />
+            android:hint="type your name here ..." />
 
     </android.support.design.widget.TextInputLayout>
 

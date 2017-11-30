@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 checkEmptyUser();
             }
         });
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private void connectToServer() {
         //NOTE: Code connect type in here
         //Don't write in others
-        joinGroupChat();
 
 
     }
@@ -85,11 +85,15 @@ public class MainActivity extends AppCompatActivity {
 
         intent.putExtras(bundle);
 
+        connectToServer();
+
         startActivity(intent);
 
     }
 
     private void checkEmptyUser() {
         //NOTE: Check User NOT empty in here .....
+        joinGroupChat();
+
     }
 }
